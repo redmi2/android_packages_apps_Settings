@@ -7083,5 +7083,11 @@
     <string name="label_global_roaming_settings">Roaming Settings</string>
 
     <string name="storage_menu_cleanup">Storage Cleanup</string>
+
     <string name="profiles_settings_title">System profiles</string>
+
+    <!-- Advanced reboot options -->
+    <string name="advanced_reboot_title">Advanced reboot</string>
+    <string name="advanced_reboot_summary">When unlocked, include options in the power menu for rebooting into recovery, bootloader or to do a software reboot</string>
+
 </resources>
