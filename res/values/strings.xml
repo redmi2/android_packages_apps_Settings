@@ -7103,4 +7103,9 @@
     <string name="storage_menu_cleanup">Storage Cleanup</string>
     <string name="qtifeedback_settings_title">Hardware Feedback</string>
     <string name="qtifeedback_settings_subtitle">Qualcomm Technologies Reporting</string>
+
+    <!-- Advanced reboot options -->
+    <string name="advanced_reboot_title">Advanced reboot</string>
+    <string name="advanced_reboot_summary">When unlocked, include options in the power menu for rebooting into recovery, bootloader or to do a software reboot</string>
+
 </resources>
