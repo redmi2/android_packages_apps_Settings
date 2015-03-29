@@ -6083,6 +6083,9 @@
     <!-- Sound: Other sounds: Title for the option enabling touch sounds for screen locking sounds. [CHAR LIMIT=30] -->
     <string name="screen_locking_sounds_title">Screen locking sounds</string>
 
+    <!-- Sound: Other sounds: Title for the option enabling screenshot sounds. [CHAR LIMIT=30] -->
+    <string name="screenshot_shutter_sound_title">Screenshot shutter sound</string>
+
     <!-- Sound: Other sounds: Title for the option enabling charging sounds. [CHAR LIMIT=30] -->
     <string name="charging_sounds_title">Charging sounds</string>
 
