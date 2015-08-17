@@ -6169,6 +6169,8 @@
     <string name="external_storage_turn_on">External storage has been turned on</string>
     <string name="external_storage_turn_off">External storage has been turned off</string>
     <string name="switch_data_subscription">Data services are now switched to SIM%1$s.</string>
+    <string name="data_switch_warning_title">Select Data in SIM%1$s</string>
+    <string name="data_switch_warning_text">Changing data access will stop all LTE services. Do you want to continue?</string>
     <string name="select_sim_card">Select SIM card</string>
    <!-- Title and summary for SIM Status -->
    <string name="imei_information_title">IMEI information</string>
