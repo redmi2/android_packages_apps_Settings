@@ -67,6 +67,7 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
 
     public static final String CONFIG_LTE_SUB_SELECT_MODE = "config_lte_sub_select_mode";
     private static final String CONFIG_PRIMARY_SUB_SETABLE = "config_primary_sub_setable";
+    private static final String CONFIG_CT_CARD_PRESENT = "config_ct_card_present";
 
     private static final String DISALLOW_CONFIG_SIM = "no_config_sim";
     private static final String SIM_ENABLER_CATEGORY = "sim_enablers";
@@ -271,6 +272,25 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
         }
     }
 
+    //If device is in primary card with 7+5 mode and CT card is present, then disable DDS option in UI
+    private boolean disableDds() {
+        boolean disableDds = false;
+        boolean ctCardPresent = false;
+        boolean is7_5_modeEnabled =
+                SystemProperties.getBoolean("persist.radio.primary_7_5_mode", false);
+        if (is7_5_modeEnabled) {
+            if (TelephonyManager.getDefault().getMultiSimConfiguration().
+                equals(TelephonyManager.MultiSimVariants.DSDS)) {
+                if (mSubInfoList.size() == 2) {
+                    disableDds = true;
+                }
+            }
+            ctCardPresent = android.provider.Settings.Global.getInt(
+                    this.getContentResolver(), CONFIG_CT_CARD_PRESENT, 0) == 1;
+        }
+        return disableDds && ctCardPresent;
+     }
+
     private void updateActivitesCategory() {
         createDropDown((DropDownPreference) findPreference(KEY_CELLULAR_DATA));
         createDropDown((DropDownPreference) findPreference(KEY_CALLS));
@@ -339,8 +359,16 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
     private void updateCellularDataPreference() {
         final DropDownPreference simPref = (DropDownPreference) findPreference(KEY_CELLULAR_DATA);
         boolean callStateIdle = isCallStateIdle();
+        boolean isCellularDataEnabled = true;
         // Enable data preference in msim mode and call state idle
         simPref.setEnabled((mNumSims > 1) && callStateIdle);
+        if (disableDds()) {
+            isCellularDataEnabled = false;
+        }
+
+        Log.d(TAG, "updateCellularDataValues: enabled:" + isCellularDataEnabled);
+
+        simPref.setEnabled(isCellularDataEnabled && callStateIdle);
         // Display toast only once when the user enters the activity even though the call moves
         // through multiple call states (eg - ringing to offhook for incoming calls)
         if (callStateIdle == false && inActivity && dataDisableToastDisplayed == false) {
