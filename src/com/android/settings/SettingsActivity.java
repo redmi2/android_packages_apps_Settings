@@ -43,6 +43,7 @@ import android.os.INetworkManagementService;
 import android.os.Message;
 import android.os.RemoteException;
 import android.os.ServiceManager;
+import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.preference.Preference;
@@ -1198,7 +1199,8 @@ public class SettingsActivity extends Activity
                         removeTile = true;
                     }
                 } else if (id == R.id.lte_4g_settings) {
-                    if (!getResources().getBoolean(R.bool.config_4gsettings_enabled)) {
+                    if (!getResources().getBoolean(R.bool.config_4gsettings_enabled) ||
+                            SystemProperties.getBoolean("persist.radio.ct_class_c", false)) {
                         removeTile = true;
                     }
                 } else if (id == R.id.data_usage_settings) {
