@@ -105,6 +105,7 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
 
     private boolean inActivity;
     private boolean dataDisableToastDisplayed = false;
+    private Context mContext;
 
     public SimSettings() {
         super(DISALLOW_CONFIG_SIM);
@@ -114,8 +115,9 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
     public void onCreate(final Bundle bundle) {
         super.onCreate(bundle);
         Log.d(TAG,"on onCreate");
+        mContext = getActivity();
         final TelephonyManager tm =
-                    (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+                    (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
 
         if (mSubInfoList == null) {
             mSubInfoList = SubscriptionManager.getActiveSubInfoList();
@@ -136,15 +138,15 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
         intentFilter.addAction(TelephonyIntents.ACTION_SUBINFO_CONTENT_CHANGE);
         intentFilter.addAction(TelephonyIntents.ACTION_SUBINFO_RECORD_UPDATED);
 
-        getActivity().registerReceiver(mDdsSwitchReceiver, intentFilter);
+        mContext.registerReceiver(mDdsSwitchReceiver, intentFilter);
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         Log.d(TAG,"on onDestroy");
         getActivity().unregisterReceiver(mDdsSwitchReceiver);
         unRegisterPhoneStateListener();
+        super.onDestroy();
     }
 
     private void unRegisterPhoneStateListener() {
@@ -170,7 +172,7 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
                     mPreferredDataSubscription = preferredDataSubscription;
                     String status = getResources().getString(R.string.switch_data_subscription,
                             SubscriptionManager.getSlotId(preferredDataSubscription) + 1);
-                    Toast.makeText(getActivity(), status, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, status, Toast.LENGTH_SHORT).show();
                 }
             } else if (TelephonyIntents.ACTION_SUBINFO_CONTENT_CHANGE.equals(action)
                     || TelephonyIntents.ACTION_SUBINFO_RECORD_UPDATED.equals(action)) {
@@ -340,7 +342,7 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
         // Display toast only once when the user enters the activity even though the call moves
         // through multiple call states (eg - ringing to offhook for incoming calls)
         if (callStateIdle == false && inActivity && dataDisableToastDisplayed == false) {
-            Toast.makeText(getActivity(), R.string.data_disabled_in_active_call,
+            Toast.makeText(mContext, R.string.data_disabled_in_active_call,
                     Toast.LENGTH_SHORT).show();
             dataDisableToastDisplayed = true;
         }
