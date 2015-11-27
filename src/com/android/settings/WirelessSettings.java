@@ -43,6 +43,8 @@ import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.provider.SearchIndexableResource;
 import android.provider.Settings;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -613,7 +615,22 @@ public class WirelessSettings extends SettingsPreferenceFragment
         };
 
     private boolean isWifiCallingSettingsSupported() {
-        return getActivity().getResources().getBoolean(
-                R.bool.config_wifi_calling_settings_supported);
+        boolean isWifiCallingSupported = false;
+        Context context = getActivity();
+        List<SubscriptionInfo> subInfoList =
+                SubscriptionManager.from(context).getActiveSubscriptionInfoList();
+
+        if (subInfoList != null) {
+            for (SubscriptionInfo sir : subInfoList) {
+                if (SubscriptionManager.isValidSubscriptionId(sir.getSubscriptionId())) {
+                    Resources subRes = SubscriptionManager.getResourcesForSubId(context,
+                            sir.getSubscriptionId());
+                    isWifiCallingSupported = subRes.getBoolean(R.bool.
+                            config_wifi_calling_settings_supported);
+                    if (isWifiCallingSupported) break;
+                }
+            }
+        }
+        return isWifiCallingSupported;
     }
 }
