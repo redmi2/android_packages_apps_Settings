@@ -233,6 +233,7 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
                 }
                 // Refresh UI whenever subinfo record gets changed
                 updateAllOptions();
+                initLTEPreference();
             }
         }
     };
@@ -761,6 +762,7 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
                             SubscriptionManager.NAME_SOURCE_USER_INPUT);
 
                     updateAllOptions();
+                    initLTEPreference();
                     update();
                     editor.commit();
                 }
