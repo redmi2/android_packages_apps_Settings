@@ -2969,4 +2969,8 @@
     <string name="qtifeedback_settings_title">硬件反馈</string>
     <string name="qtifeedback_settings_subtitle">Qualcomm Technologies 报告</string>
     <string name="app_ops_permiss_name">应用联网限制</string>
+    <!-- Advanced reboot options -->
+    <string name="advanced_reboot_title">高级重启</string>
+    <string name="advanced_reboot_summary">当解锁，包括电源菜单选项，重启进入恢复，引导程序或做软件重启</string>
+
 </resources>
