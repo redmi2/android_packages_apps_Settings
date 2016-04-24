@@ -2902,4 +2902,7 @@
     <string name="picture_color_mode_desc" msgid="1141891467675548590">"Erabili sRGB"</string>
     <string name="qtifeedback_settings_title">Hardwareri buruzko iritzia</string>
     <string name="qtifeedback_settings_subtitle">Qualcomm Technologies enpresaren txostenak</string>
+    <string name="app_ops_permiss_name">acceso a la red de aplicaciones</string>
+    <string name="data_usage_menu_show_time_range">Mostrar rango de tiempo</string>
+    <string name="data_usage_menu_hide_time_range">Ocultar rango de tiempo</string>
 </resources>
