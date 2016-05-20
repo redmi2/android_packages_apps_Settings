@@ -1041,10 +1041,8 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
         }
         int currentPrimarySlot = Settings.Global.getInt(mContext.getContentResolver(),
                  CONFIG_CURRENT_PRIMARY_SUB, SubscriptionManager.INVALID_SIM_SLOT_INDEX);
-        boolean isManualMode = Settings.Global.getInt(mContext.getContentResolver(),
-                 CONFIG_LTE_SUB_SELECT_MODE, 1) == 0;
 
-        log("init LTE primary slot : " + currentPrimarySlot + " isManualMode :" + isManualMode);
+        log("init LTE primary slot : " + currentPrimarySlot);
 
         if (SubscriptionManager.isValidSlotId(currentPrimarySlot)) {
             final SubscriptionInfo subInfo = mSubscriptionManager
@@ -1054,7 +1052,7 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
         } else {
             mPrimarySubSelect.setSummary("");
         }
-        mPrimarySubSelect.setEnabled(isManualMode && mSelectableSubInfos.size() > 1);
+        updatePrimarySub();
     }
 
     private boolean disableDds() {
@@ -1102,9 +1100,20 @@ public class SimSettings extends RestrictedSettingsFragment implements Indexable
                 if (DBG) log("PhoneStateListener.onCallStateChanged: state=" + state);
                 mCallState[i] = state;
                 updateCellularDataValues();
+                updatePrimarySub();
             }
         };
         return mPhoneStateListener[phoneId];
+    }
+
+    private void updatePrimarySub() {
+        if (!mPrimaryPrefRemoved) {
+            boolean isManualMode = Settings.Global.getInt(mContext.getContentResolver(),
+                    CONFIG_LTE_SUB_SELECT_MODE, 1) == 0;
+            log("updatePrimarySub isManualMode :" + isManualMode);
+            mPrimarySubSelect.setEnabled(isManualMode && mSelectableSubInfos.size() > 1 &&
+                    isCallStateIdle());
+        }
     }
 
     private boolean isCallStateIdle() {
